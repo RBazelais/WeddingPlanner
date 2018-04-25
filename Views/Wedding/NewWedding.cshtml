@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "New Wedding";
+}
+<h2>@ViewData["Title"]</h2>
+
+@model WeddingPlanner.Models.WeddingViewModel
+
+<div class="container">
+	<div class="row">
+		<form asp-controller="Wedding" asp-action="CreateWedding" class="form-horizontal" method="post">
+            
+			<div class="form-group">
+				<label asp-for="P1Name" class="col-sm-2 control-label">Partner 1</label>
+				<div class="col-sm-6">
+					<input asp-for="P1Name" class="form-control" placeholder="Name 1" type="text">
+                    <span asp-validation-for="P1Name"></span>
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label asp-for="P2Name" class="col-sm-2 control-label">Partner 2</label>
+				<div class="col-sm-6">
+					<input asp-for="P2Name" class="form-control" placeholder="Name 2" type="text">
+                    <span asp-validation-for="P2Name"></span>
+				</div>
+			</div>
+            <div class="form-group">
+                <label asp-for="Date" class="col-sm-2 control-label">Date</label>
+                <div class="col-sm-3">
+                    <input asp-for="Date" class="form-control">
+                </div>
+            </div>
+			<div class="form-group">
+				<label asp-for="Address" class="col-sm-2 control-label">Address</label>
+				<div class="col-sm-6">
+					<input asp-for="Address" class="form-control" placeholder="Address" type="text">
+                    <span asp-validation-for="Address"></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-6">
+					<button class="btn btn-default" type="submit">Create</button>
+				</div>
+			</div>
+		</form>
+		<a asp-action="Dashboard" asp-controller="Wedding"><button class="btn btn-primary" type="submit">Dashboard</button></a> 
+		<a asp-action="Logout" asp-controller="Home"><button class="btn btn-primary" type="submit">Logout</button></a>
+	</div>
+</div>

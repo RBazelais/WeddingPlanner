@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "This Wedding @ViewBag.EventInfo.P1Name &AMP; @ViewBag.EventInfo.P2Name";
+}
+<!-- <h2>@ViewData["Title"]</h2> -->
+
+@using WeddingPlanner.Models;
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>@ViewBag.EventInfo.P1Name &AMP; @ViewBag.EventInfo.P2Name&#39;s Wedding~</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>@ViewBag.EventInfo.Date.ToString("MMM dd, yyyy")</h3>
+
+            @foreach(var guest in @ViewBag.EventInfo.Guests)
+            {
+                <p style="font-size: 24px;">@guest.User.FirstName @guest.User.LastName</p>
+            }
+        </div>
+        <div class="col-sm-6">
+            <p>Things go here</p>
+            <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=10777%20Main%20St%20%23100%2C%20Bellevue%2C%20WA%2098004&key=AIzaSyCfQO6aFCZEhPGt2QMnykn_fWaupRIO4oU" allowfullscreen></iframe>
+            <!-- Google API Key: AIzaSyCfQO6aFCZEhPGt2QMnykn_fWaupRIO4oU -->
+        </div>
+        <a asp-action="Dashboard" asp-controller="Wedding"><button class="btn btn-primary" type="submit">Dashboard</button></a> 
+		<a asp-action="Logout" asp-controller="Home"><button class="btn btn-primary" type="submit">Logout</button></a>
+    </div>
+</div>

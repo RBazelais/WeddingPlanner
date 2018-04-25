@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Welcome to the Wedding Planner";
+}
+<h2>@ViewData["Title"]</h2>
+
+@model WeddingPlanner.Models.Wedding;
+
+<div class="container">
+	<div class="col-sm-6">
+		<h3>@ViewBag.UserInfo.FirstName&#39;s Wedding Plans </h3>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-sm-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Wedding</th>
+						<th>Date</th>
+						<th>Guest(s)</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach(var wedding in ViewBag.AllWeddings)
+					{
+						<tr>
+							<td><a asp-action="DisplayWedding" asp-route-id="@wedding.WeddingId">@wedding.P1Name &AMP; @wedding.P2Name</a></td>
+							<td>@wedding.Date.ToString("MMM dd, yyyy")</td>
+							<td>@wedding.Guests.Count</td>
+							<td>
+								@if(wedding.UserId == ViewBag.UserId)
+								{
+									<a asp-action="Delete" asp-route-id="@wedding.WeddingId">Delete</a>
+								}
+								else
+								{
+									bool attending = false;
+									@foreach(var guest in wedding.Guests)
+									{
+										@if( guest.UserId == ViewBag.UserId)
+										{
+											attending = true;
+											break;
+										}
+									}
+									@if(attending == true)
+									{
+										<a asp-action="RemoveRSVP" asp-route-id="@wedding.WeddingId">Un-RSVP</a>
+									}
+									else
+									{
+										<a asp-action="AddRSVP" asp-route-id="@wedding.WeddingId">RSVP</a>
+									}
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+
+            <a asp-action="NewWedding" asp-controller="Wedding"><button class="btn btn-primary" type="submit">New Wedding</button></a> 
+            <a asp-action="Logout" asp-controller="Home"><button class="btn btn-primary" type="submit">Logout</button></a>
+		</div>
+	</div>
+</div>
