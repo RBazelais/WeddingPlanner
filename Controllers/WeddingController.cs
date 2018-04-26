@@ -183,8 +183,9 @@ namespace WeddingPlanner.Controllers
 		[Route("RemoveRSVP/{id}")]
 		public IActionResult RemoveRSVP(int id)
 		{
-			Guest GuestObj = _context.Guests.Include(a => a.User).ThenInclude(b => b.Guests).SingleOrDefault(c => c.WeddingId == id);
-			_context.Guests.Remove(GuestObj);
+			int? CurrUserId = HttpContext.Session.GetInt32("CurrentUser");
+			Guest thisGuest = _context.Guests.Where(a => a.WeddingId == id && a.UserId == CurrUserId).SingleOrDefault();
+			_context.Guests.Remove(thisGuest);
 			_context.SaveChanges();
 			Console.WriteLine("********* You Un-RSVPed *********");
 			return RedirectToAction("Dashboard");

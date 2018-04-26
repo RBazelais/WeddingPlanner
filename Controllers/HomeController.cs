@@ -42,6 +42,16 @@ namespace WeddingPlanner.Controllers
             // int? LoginId = HttpContext.Session.GetInt32("LoggedIn");
 
             // checks results from user with the email
+            User exists = _context.Users.Where(User => User.Email == regUser.Email).SingleOrDefault();
+            // if statment that checks results from new user with the email 
+            // if (_context.users.Where(u => u.Email == regUser.Email).ToList().Count() > 0)
+            if (exists != null)
+            {
+                //you have to make custom error message it does not exist in previous logic. 
+                ViewBag.err = "Email already exist, please try new one.";
+                return View("Index");
+            }
+
 
             // if model is valid create new user
             if(ModelState.IsValid)
@@ -89,6 +99,7 @@ namespace WeddingPlanner.Controllers
         [Route("LoginUser")]
         public IActionResult LoginUser(LoginViewModel thisUser)
         {
+            Console.WriteLine("********** Enter Login Process ***********");
             // validate model
             TryValidateModel(thisUser);
             // Attempt to retrieve a user from your database based on the Email submitted
@@ -109,13 +120,16 @@ namespace WeddingPlanner.Controllers
                 else
                 {
                     LoginState();
-                    ViewData["Message"] = "Incorrect Email or Password";
+                    // custom error message it does not exist in previous logic
+                    Console.WriteLine("Incorrect Email or Password");
+                    ViewBag.err = "Incorrect Email or Password";
                     return View("Login");
                 }
             }
             else{
                 LoginState();
-                ViewData["Message"] = "ERROR";
+                Console.WriteLine("You're not logged in properly. Try Again");
+                ViewBag.err = "You're not logged in properly. Try Again";
                 return View("Login");
             }
         }
@@ -131,17 +145,6 @@ namespace WeddingPlanner.Controllers
             //If user is logged in
             if((int)LoginId > 0)
             {
-                // User currentUser = _context.Users.Include(u => u.Transactions).SingleOrDefault(User => User.UserId == LoginId);
-                // ViewBag.UserInfo = currentUser;
-                // ViewBag.UserTransactions = currentUser.Transactions.OrderByDescending(t => t.);
-                if(TempData["Message"] != null)
-                {
-                    ViewBag.Message = TempData["Message"];
-                }
-                else
-                {
-                    ViewBag.Message = "Please enter an amount";
-                }
                 return View("Dashboard", "Wedding");
             }
             else
@@ -149,44 +152,6 @@ namespace WeddingPlanner.Controllers
                 return View("Index");
             }
         }
-
-        [HttpPost]
-        [Route("UserAction")]
-        public IActionResult UserAction(Wedding NewWedding)
-        {
-
-            // User UserInfo = GetInfo();
-
-            // 
-            // if( UserInfo.Balance >= ( (-1) * NewTransaction.Amount ) )
-            // {
-
-            //     double? NewBalance = UserInfo.Balance + NewTransaction.Amount;
-            //     UserInfo.Balance = (double)NewBalance;
-            //     _context.SaveChanges();
-
-            //     Console.WriteLine("TRANSACTION MADE, NEW BALANCE: " + NewBalance);
-
-            //     Transaction CreatedTransaction = new Transaction
-            //     {
-            //         UserId = (int)HttpContext.Session.GetInt32("CurrentUser"),
-            //         Amount = NewTransaction.Amount,
-            //         Date = DateTime.UtcNow
-            //     };
-            //     TempData["Message"] = "Successful transaction";
-
-            //     _context.Transactions.Add(CreatedTransaction);
-            //     _context.SaveChanges();
-            // }
-            // else
-            // {
-            //     System.Console.WriteLine("ERROR OCCURRED, FAILED TRANSACTION");
-            //     TempData["Message"] = "Insufficient funds";
-            // }
-            
-            return RedirectToAction("Dashboard", "Weddings");
-        }
-
 
         [HttpGet]
         [Route("Logout")]

@@ -4,6 +4,7 @@
 @model WeddingPlanner.Models.RegisterViewModel;
 @using WeddingPlanner.Models;
 
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -12,6 +13,19 @@
         <div class="col-md-6">
             <fieldset>
                 <legend>Registration</legend>
+                @{
+                    if(!(ViewBag.errors is null))
+                    {
+                        foreach (var error in ViewBag.errors)
+                        {
+                            if(@error.Errors.Count > 0 )
+                            {
+                                <p>@error.Errors[0].ErrorMessage</p>
+                            }
+                        }
+                    }
+                    <span>@ViewBag.err</span>
+                }
                 <form asp-controller="Home" asp-action="register" method="POST">
                     <div class="form-group">    
                         <label asp-for="FirstName">First Name: </label>
@@ -42,6 +56,8 @@
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
             </fieldset>
+            
+            <br>
             <a asp-controller="Home" asp-action="Login">Already, Registered?</a>
 
         </div>
